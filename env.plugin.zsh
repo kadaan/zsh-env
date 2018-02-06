@@ -1,9 +1,10 @@
 chenv() {
-  DIR="$HOME/.env"
-  PATTERN="?_$1:l.sh"
-  if test -n "$(find $DIR -maxdepth 1 -name $PATTERN -print -quit)"; then
-      source $DIR/?_$1:l.sh
-      export $(egrep -v '^[[:blank:]]*#|^[[:blank:]]*$' "$HOME/.env/3_prod.sh" | cut -d= -f1)
+  local DIR="$HOME/.env"
+  local PATTERN="?_$1:l.sh"
+  local CONF=$(find $DIR -maxdepth 1 -name $PATTERN -print -quit)
+  if test -n "$CONF"; then
+      source $CONF
+      export $(egrep -v '^[[:blank:]]*#|^[[:blank:]]*$' "$CONF" | cut -d= -f1)
   else
       echo "Environment '$1' does not exist" 1>&2
       return 1
@@ -11,6 +12,6 @@ chenv() {
 }
 
 lsenv() {
-  DIR="$HOME/.env"
+  local DIR="$HOME/.env"
   print -l $DIR/*.sh
 }
