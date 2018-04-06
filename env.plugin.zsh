@@ -6,6 +6,7 @@ chenv() {
       source $CONF
       export $(egrep -v '^[[:blank:]]*#|^[[:blank:]]*$' "$CONF" | cut -d= -f1)
   else
+      echo "Environment '$1' does not exist" 1>&2
       return 1
   fi
 }
