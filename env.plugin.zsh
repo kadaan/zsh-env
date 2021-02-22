@@ -5,7 +5,9 @@ chenv() {
   if test -n "$CONF"; then
       source $CONF
       export $(egrep -v '^[[:blank:]]*#|^[[:blank:]]*$' "$CONF" | egrep -v '^.*=$' | cut -d= -f1)
-      unset $(egrep -v '^[[:blank:]]*#|^[[:blank:]]*$' "$CONF" | egrep '^.*=$' | cut -d= -f1)
+      while read var; do
+        unset $var
+      done < <(egrep -v '^[[:blank:]]*#|^[[:blank:]]*$' "$CONF" | egrep '^.*=$' | cut -d= -f1)
   else
       echo "Environment '$1' does not exist" 1>&2
       return 1
